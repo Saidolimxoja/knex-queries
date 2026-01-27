@@ -1,4 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
+import { concat } from 'rxjs';
 import { KnexService } from 'src/database/knex.service';
 
 @Injectable()
@@ -267,13 +268,63 @@ export class QueriesService {
 
   async Suppliers_Average_product_revenue() {
     const result = await this.knex('suppliers as s')
-    .leftJoin('products as p', 's.supplier_id', 'p.supplier_id')
-    .select(
-      's.company_name',
-      this.knex.raw('ROUND(AVG(p.unit_price)) AS "Average_Product_Price"'),
-    )
-    .groupBy('s.company_name');
-    
+      .leftJoin('products as p', 's.supplier_id', 'p.supplier_id')
+      .select(
+        's.company_name',
+        this.knex.raw('ROUND(AVG(p.unit_price)) AS "Average_Product_Price"'),
+      )
+      .groupBy('s.company_name')
+      .orderBy('Average_Product_Price', 'DESC');
+
+    console.log(result);
+    return result;
+  }
+
+  async Every_employee_to_customers() {
+    const result = await this.knex('employees as e')
+      .leftJoin('orders as o', 'e.employee_id', 'o.employee_id')
+      .leftJoin('customers as c', 'o.customer_id', 'c.customer_id')
+      .select(
+        this.knex.raw(`
+          e.first_name || ' ' || e.last_name as "Employee_Name"`),
+        'c.customer_id',
+        'o.order_id',
+      );
+
+    console.log(result);
+    return result;
+  }
+
+  async Every_order_Revenue() {
+    const result = await this.knex('order_details as od')
+      .leftJoin('products as p', 'od.product_id', 'p.product_id')
+      .select(
+        'p.product_name',
+        this.knex.raw(
+          'ROUND(SUM(od.unit_price * od.quantity * (1 - od.discount))) AS "TOTAL_Revenue"',
+        ),
+      )
+      .groupBy('p.product_name')
+      .orderBy('TOTAL_Revenue', 'DESC');
+
+    console.log(result);
+    return result;
+  }
+
+  async Revenue_Per_customers() {
+    const result = await this.knex('customers as c')
+      .leftJoin('orders as o', 'c.customer_id', 'o.customer_id')
+      .leftJoin('order_details as od', 'o.order_id', 'od.order_id')
+      .select(
+        'c.customer_id',
+        'c.company_name',
+        this.knex.raw(
+          'ROUND(SUM(od.unit_price * od.quantity * (1 - od.discount))) AS "Total_Revenue"',
+        ),
+      )
+      .groupBy('c.customer_id', 'c.company_name')
+      .orderBy('Total_Revenue', 'DESC');
+
     console.log(result);
     return result;
   }

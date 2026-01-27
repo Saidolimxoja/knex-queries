@@ -111,5 +111,21 @@ export class QueriesController {
     return await this.queriesService.Suppliers_Average_product_revenue();
   } 
 
+  @Get('22')
+  async everyEmployeeToCustomers() {
+    return await this.queriesService.Every_employee_to_customers();
+  }
+
+  @Get('23')
+  async everyOrderRevenue() {
+    return await this.queriesService.Every_order_Revenue();
+  }
+
+  @Get('24')
+  async get24() {
+    return await this.queriesService.Revenue_Per_customers();
+  }
+
+
   
 }
