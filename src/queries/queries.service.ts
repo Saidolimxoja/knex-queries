@@ -1,5 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { concat } from 'rxjs';
+import e from 'express';
+import { concat, groupBy } from 'rxjs';
 import { KnexService } from 'src/database/knex.service';
 
 @Injectable()
@@ -373,7 +374,164 @@ export class QueriesService {
       )
       .groupBy('p.product_name')
       .orderBy('Total_revenue_for_each_Product', 'DESC')
+      .limit(5);
 
+    console.log(result);
+    return result;
+  }
+
+  async Revenue_by_Country() {
+    const result = await this.knex('customers as c')
+      .leftJoin('orders as o', 'c.customer_id', 'o.customer_id')
+      .leftJoin('order_details as od', 'o.order_id', 'od.order_id')
+      .select(
+        'c.country',
+        this.knex.raw(
+          'ROUND(SUM(od.unit_price * od.quantity * (1 - od.discount))) AS "Total_Revenue"',
+        ),
+      )
+      .groupBy('c.country')
+      .orderBy('Total_Revenue', 'DESC');
+
+    console.log(result);
+    return result;
+  }
+
+  async THE_BEST_order() {
+    const result = await this.knex('orders as o')
+      .leftJoin('order_details as od', 'od.order_id', 'o.order_id')
+      .select(
+        'o.order_id',
+        this.knex.raw(
+          'ROUND(SUM(od.unit_price * od.quantity * (1-od.discount))) as "Total_revenue"',
+        ),
+      )
+      .groupBy('o.order_id')
+      .orderBy('Total_revenue', 'DESC')
+      .limit(1);
+
+    console.log(result);
+    return result;
+  }
+
+  async Min_order_by_employee() {
+    const result = await this.knex('orders as o')
+      .leftJoin('employees as e', 'o.employee_id', 'e.employee_id')
+      .select(
+        'e.first_name',
+        this.knex.raw('ROUND(SUM(o.order_id)) as "Min_order"'),
+      )
+      .groupBy('e.first_name')
+      .orderBy('Min_order', 'ASC')
+      .limit(1);
+
+    console.log(result);
+    return result;
+  }
+
+  async The_most_selling_category() {
+    const result = await this.knex('order_details as od')
+      .join('products as p', 'p.product_id', 'od.product_id')
+      .join('categories as c', 'c.category_id', 'p.category_id')
+      .select(
+        'c.category_name',
+        this.knex.raw('SUM(od.quantity) as total_sold_units'),
+        this.knex.raw('COUNT(DISTINCT od.order_id) as total_orders'),
+      )
+      .groupBy('c.category_name')
+      .orderBy('total_sold_units', 'desc');
+
+    console.log(result);
+    return result;
+  }
+
+  async To_every_employee_most_revenue() {
+    const result = await this.knex('orders as o')
+      .leftJoin('order_details as od', 'od.order_id', 'o.order_id')
+      .leftJoin('employees as e', 'e.employee_id', 'o.employee_id')
+      .select(
+        'e.first_name',
+        this.knex.raw(
+          'ROUND(SUM(od.unit_price * od.quantity * (1 - od.discount))) as "REVENUE"',
+        ),
+      )
+      .groupBy('e.first_name')
+      .orderBy('REVENUE', 'desc');
+
+    console.log(result);
+    return result;
+  }
+
+  async products_than_average_price() {
+    const result = await this.knex('products')
+      .select('product_id', 'product_name', 'unit_price')
+      .where('unit_price', '>', this.knex('products').avg('unit_price'))
+      .orderBy('unit_price', 'desc');
+
+    console.log(result);
+    return result;
+  }
+
+  async To_max_price_of_Categories() {
+    const result = await this.knex('products as p')
+      .join('categories as c', 'c.category_id', ' p.category_id')
+      .select(
+        'c.category_name',
+        this.knex.raw('MAX(p.unit_price) as "Max_price"'),
+      )
+      .groupBy('c.category_name');
+
+    console.log(result);
+    return result;
+  }
+
+  async Every_employye_revenue_by_customer() {
+    const result = await this.knex('employees as e')
+      .join('orders as o', 'o.employee_id', 'e.employee_id')
+      .join('customers as c', 'c.customer_id', 'o.customer_id')
+      .join('order_details as od', 'od.order_id', 'o.order_id')
+      .select(
+        this.knex.raw(`
+        e.first_name || ' ' || e.last_name as "Employee_Name"`),
+        'c.customer_id',
+        this.knex.raw(
+          'SUM(od.unit_price * od.quantity * (1 - od.discount)) as "TOTAL"',
+        ),
+      )
+      .groupBy('Employee_Name', 'c.customer_id')
+      .orderBy('TOTAL', 'ASC');
+
+    console.log(result);
+    return result;
+  }
+
+  async customers_of_each_country() {
+    const { rows } = await this.knex.raw(`SELECT 
+    c.country,
+    COUNT(DISTINCT o.customer_id) as customer_count,
+    COUNT(o.order_id) as total_orders
+    FROM customers c
+    JOIN orders o ON c.customer_id = o.customer_id
+    GROUP BY c.country
+    ORDER BY customer_count DESC`);
+
+    console.log(rows);
+    return rows;
+  }
+
+  async The_best_employee() {
+    const result = await this.knex('employees as e')
+      .leftJoin('orders as o', 'o.employee_id', 'e.employee_id')
+      .leftJoin('order_details as od', 'od.order_id', 'o.order_id')
+      .select(
+        this.knex.raw(`
+        e.first_name || ' ' || e.last_name as "Employee_Name",
+        COUNT(DISTINCT o.order_id) as "total_orders",
+        Round(SUM(od.quantity * od.unit_price * (1 - od.discount))) as "total_sales",
+        Round(AVG(od.quantity * od.unit_price * (1 - od.discount))) as "avg_order_value"`),
+      )
+      .groupBy('e.employee_id')
+      .orderBy('total_sales', 'DESC');
 
     console.log(result);
     return result;

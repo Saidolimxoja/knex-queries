@@ -100,7 +100,6 @@ export class QueriesController {
     return await this.queriesService.Customer_id_with_NamesOfEmployees();
   }
 
-
   @Get('20')
   async ordersOfCategories() {
     return await this.queriesService.Orders_of_categories();
@@ -109,7 +108,7 @@ export class QueriesController {
   @Get('21')
   async suppliersAverageProductRevenue() {
     return await this.queriesService.Suppliers_Average_product_revenue();
-  } 
+  }
 
   @Get('22')
   async everyEmployeeToCustomers() {
@@ -140,5 +139,56 @@ export class QueriesController {
   async top5RevenueByProducts() {
     return await this.queriesService.Top5_revenue_by_products();
   }
+
+  @Get('28')
+  async revenueByCountry() {
+    return await this.queriesService.Revenue_by_Country();
+  }
+
+  @Get('29')
+  async ThebestRevenue() {
+    return await this.queriesService.THE_BEST_order();
+  }
+
+  @Get('30')
+  async MinOrderEmploye() {
+    return await this.queriesService.Min_order_by_employee();
+  }
+
+  @Get('31')
+  async TheMostSellingCategory() {
+    return await this.queriesService.The_most_selling_category();
+  }
+
+  @Get('32')
+  async To_every_employee_most_revenue() {
+    return await this.queriesService.To_every_employee_most_revenue();
+  }
+
+  @Get('33')
+  async products_than_average_price() {
+    return await this.queriesService.products_than_average_price();
+  }
+  @Get('34')
+  async To_max_price_of_Categories() {
+    return await this.queriesService.To_max_price_of_Categories();
+  }
+
+  @Get('35')
+  async Every_employye_revenue_by_customer() {
+    return await this.queriesService.Every_employye_revenue_by_customer();
+  }
+  
+  
+  @Get('36')
+  async customers_of_each_country() {
+    return await this.queriesService.customers_of_each_country();
+  }
+  
+  @Get('37')
+  async The_best_employee() {
+    return await this.queriesService.The_best_employee();
+  }
+
 
 }
