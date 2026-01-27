@@ -180,15 +180,101 @@ export class QueriesService {
   }
 
   async average_units_in_price() {
-    const result = await this.knex('products')
-      .select(
-        this.knex.raw('ROUND(AVG(units_in_stock)) AS "Average_Units_In_Stock"'),
-      );
+    const result = await this.knex('products').select(
+      this.knex.raw('ROUND(AVG(units_in_stock)) AS "Average_Units_In_Stock"'),
+    );
 
     console.log(result);
     return result;
   }
 
-  async 
-  
+  async Count_Supllier() {
+    const result = await this.knex('suppliers').select(
+      this.knex.raw('COUNT(supplier_id) AS "Supplier_Count"'),
+    );
+
+    console.log(result);
+    return result;
+  }
+
+  async orders_with_discount() {
+    const result = await this.knex('order_details')
+      .where('discount', '>', 0)
+      .select(this.knex.raw('COUNT(discount) AS "Discount_Count"'));
+
+    console.log(result);
+    return result;
+  }
+
+  async Supplier_Countries() {
+    const result = await this.knex('suppliers')
+      .select(
+        'country',
+        this.knex.raw('COUNT(supplier_id) AS "Supplier_Count"'),
+      )
+      .groupBy('country')
+      .orderBy('Supplier_Count', 'DESC');
+
+    console.log(result);
+    return result;
+  }
+
+  async Products_name_with_categories() {
+    const result = await this.knex('products as p')
+      .leftJoin('categories as c', 'p.category_id', 'c.category_id')
+      .select('c.category_name', 'p.product_name')
+      .orderBy('c.category_name', 'ASC');
+
+    console.log(result);
+    return result;
+  }
+
+  async order_number_customer() {
+    const result = await this.knex('orders as o')
+      .leftJoin('customers as c', 'o.customer_id', 'c.customer_id')
+      .select('o.order_id', 'c.company_name', 'c.customer_id')
+      .groupBy('o.order_id', 'c.company_name', 'c.customer_id');
+
+    console.log(result);
+    return result;
+  }
+
+  async Customer_id_with_NamesOfEmployees() {
+    const result = await this.knex('employees as e')
+      .leftJoin('orders as o', 'e.employee_id', 'o.employee_id')
+      .leftJoin('customers as c', 'o.customer_id', 'c.customer_id')
+      .select('o.order_id', 'e.first_name', 'e.last_name')
+      .groupBy('o.order_id', 'e.first_name', 'e.last_name');
+
+    console.log(result);
+    return result;
+  }
+
+  async Orders_of_categories() {
+    const result = await this.knex('order_details as od')
+      .leftJoin('products as p', 'od.product_id', 'p.product_id')
+      .leftJoin('categories as c', 'p.category_id', 'c.category_id')
+      .select(
+        'c.category_name',
+        this.knex.raw('COUNT(p.product_id) AS "Product_Count"'),
+      )
+      .groupBy('c.category_name')
+      .orderBy('Product_Count', 'DESC');
+
+    console.log(result);
+    return result;
+  }
+
+  async Suppliers_Average_product_revenue() {
+    const result = await this.knex('suppliers as s')
+    .leftJoin('products as p', 's.supplier_id', 'p.supplier_id')
+    .select(
+      's.company_name',
+      this.knex.raw('ROUND(AVG(p.unit_price)) AS "Average_Product_Price"'),
+    )
+    .groupBy('s.company_name');
+    
+    console.log(result);
+    return result;
+  }
 }

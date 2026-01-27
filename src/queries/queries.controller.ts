@@ -69,4 +69,47 @@ export class QueriesController {
   async averageUnitsInPrice() {
     return await this.queriesService.average_units_in_price();
   }
+
+  @Get('14')
+  async countSupplier() {
+    return await this.queriesService.Count_Supllier();
+  }
+
+  @Get('15')
+  async ordersWithDiscount() {
+    return await this.queriesService.orders_with_discount();
+  }
+
+  @Get('16')
+  async supplierCountries() {
+    return await this.queriesService.Supplier_Countries();
+  }
+
+  @Get('17')
+  async productsNameWithCategories() {
+    return await this.queriesService.Products_name_with_categories();
+  }
+
+  @Get('18')
+  async orderNumberCustomer() {
+    return await this.queriesService.order_number_customer();
+  }
+
+  @Get('19')
+  async customerIdWithNamesOfEmployees() {
+    return await this.queriesService.Customer_id_with_NamesOfEmployees();
+  }
+
+
+  @Get('20')
+  async ordersOfCategories() {
+    return await this.queriesService.Orders_of_categories();
+  }
+
+  @Get('21')
+  async suppliersAverageProductRevenue() {
+    return await this.queriesService.Suppliers_Average_product_revenue();
+  } 
+
+  
 }
