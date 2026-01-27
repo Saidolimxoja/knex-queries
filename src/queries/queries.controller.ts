@@ -126,6 +126,19 @@ export class QueriesController {
     return await this.queriesService.Revenue_Per_customers();
   }
 
+  @Get('25')
+  async top5CustomersAlternative() {
+    return await this.queriesService.Top5_Customers();
+  }
 
-  
+  @Get('26')
+  async sellingProductsByQuantity() {
+    return await this.queriesService.Selling_Products_by_quantity();
+  }
+
+  @Get('27')
+  async top5RevenueByProducts() {
+    return await this.queriesService.Top5_revenue_by_products();
+  }
+
 }

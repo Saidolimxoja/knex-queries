@@ -328,4 +328,54 @@ export class QueriesService {
     console.log(result);
     return result;
   }
+
+  async Top5_Customers() {
+    const result = await this.knex('customers as c')
+      .leftJoin('orders as o', 'c.customer_id', 'o.customer_id')
+      .leftJoin('order_details as od', 'o.order_id', 'od.order_id')
+      .select([
+        'c.customer_id',
+        'c.company_name',
+        this.knex.raw(
+          'COALESCE(ROUND(SUM(od.unit_price * od.quantity * (1 - od.discount))), 0) AS "Total_Revenue"',
+        ),
+      ])
+      .groupBy('c.customer_id', 'c.company_name')
+      .orderBy('Total_Revenue', 'DESC')
+      .limit(5);
+
+    console.log(result);
+    return result;
+  }
+
+  async Selling_Products_by_quantity() {
+    const result = await this.knex('order_details as od')
+      .leftJoin('products as p', 'od.product_id', 'p.product_id')
+      .select(
+        'p.product_name',
+        this.knex.raw('SUM(od.quantity) AS "Total_Quantity"'),
+      )
+      .groupBy('p.product_name')
+      .orderBy('Total_Quantity', 'DESC');
+
+    console.log(result);
+    return result;
+  }
+
+  async Top5_revenue_by_products() {
+    const result = await this.knex('order_details as od')
+      .leftJoin('products as p', 'od.product_id', 'p.product_id')
+      .select(
+        'p.product_name',
+        this.knex.raw(
+          'ROUND(SUM(od.unit_price * od.quantity * (1 - od.discount))) AS "Total_revenue_for_each_Product"',
+        ),
+      )
+      .groupBy('p.product_name')
+      .orderBy('Total_revenue_for_each_Product', 'DESC')
+
+
+    console.log(result);
+    return result;
+  }
 }
