@@ -1,98 +1,89 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+🟢 1–BOSQICH: SELECT & AGGREGATE (1–10)
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+1. Customers jadvalida nechta mijoz bor?
+2. Orders jadvalida nechta buyurtma mavjud?
+3. Products jadvalida nechta mahsulot bor?
+4. UnitsInStock bo‘yicha jami mahsulotlar soni qancha?
+5. Eng qimmat mahsulot narxi nechaga teng?
+6. Eng arzon mahsulot narxi nechaga teng?
+7. Mahsulotlarning o‘rtacha narxini chiqaring
+8. Nechta yetkazib beruvchi (Suppliers) mavjud?
+9. Qaysi mamlakatdan nechta supplier bor?
+10. Discontinued bo‘lgan mahsulotlar soni
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+🟡 2–BOSQICH: GROUP BY (11–20)
 
-## Description
+11. Har bir kategoriya bo‘yicha mahsulotlar soni
+12. Har bir kategoriya bo‘yicha o‘rtacha narx
+13. Har bir mamlakat bo‘yicha mijozlar soni
+14. Har bir shahar bo‘yicha mijozlar soni
+15. Har bir supplier nechta mahsulot yetkazgan
+16. Har bir employee nechta buyurtma olgan
+17. Har bir yil bo‘yicha buyurtmalar soni
+18. Har bir oy bo‘yicha buyurtmalar soni
+19. Har bir kategoriya bo‘yicha jami UnitsInStock
+20. Har bir mamlakat bo‘yicha jami buyurtmalar
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+🟠 3–BOSQICH: JOIN (21–30)
 
-## Project setup
+21. Mahsulot nomi va uning kategoriyasi nomini chiqaring
+22. Buyurtma raqami va mijoz nomini chiqaring
+23. Buyurtma raqami va employee ism-familiyasi
+24. Har bir buyurtmada nechta turdagi mahsulot bor
+25. Har bir kategoriya bo‘yicha nechta buyurtma berilgan
+26. Har bir supplier yetkazgan mahsulotlar narxining o‘rtachasi
+27. Har bir employee qaysi mijozlarga xizmat qilgan
+28. Buyurtma sanasi va shipper nomi
+29. Har bir shipper nechta buyurtma yetkazgan
+30. Buyurtma + mahsulot + kategoriya (3 ta jadval join)
 
-```bash
-$ npm install
-```
+🔵 4–BOSQICH: REVENUE & BUSINESS (31–40)
 
-## Compile and run the project
+31. Jami tushumni hisoblang
+    UnitPrice _ Quantity _ (1 - Discount)
 
-```bash
-# development
-$ npm run start
+32. Har bir buyurtma bo‘yicha tushum
+33. Har bir mijoz bo‘yicha jami tushum
+34. TOP-5 eng ko‘p tushum keltirgan mijoz
+35. TOP-5 eng ko‘p sotilgan mahsulot (Quantity bo‘yicha)
+36. TOP-5 eng ko‘p tushum keltirgan mahsulot
+37. Har bir employee bo‘yicha jami tushum
+38. Har bir kategoriya bo‘yicha jami tushum
+39. Qaysi davlatdan ko‘proq tushum kelgan
+40. Eng foydali 1 ta buyurtma
 
-# watch mode
-$ npm run start:dev
+🔴 5–BOSQICH: SUBQUERY & ADVANCED (41–50)
 
-# production mode
-$ npm run start:prod
-```
+41. O‘rtacha narxdan qimmat mahsulotlar +
+42. Hech qachon buyurtma qilinmagan mahsulotlar +
+43. Eng kam buyurtma olgan employee +
+44. Eng ko‘p buyurtma bergan mijoz +
+45. Oxirgi 1 yilda buyurtma bermagan mijozlar -
+46. Eng ko‘p sotilgan kategoriya + 36 TASK
+47. Har bir employee uchun eng katta buyurtma summasi + 37 TASK
+48. Har bir mijozning birinchi buyurtma sanasi
+49. Oxirgi 3 oyda sotilmagan mahsulotlar -
+50. Har bir kategoriya bo‘yicha eng qimmat mahsulot + 39 task
 
-## Run tests
 
-```bash
-# unit tests
-$ npm run test
 
-# e2e tests
-$ npm run test:e2e
+---47---
+Eng yaxshi sotuvchi xodim (employee) kim? Har bir xodimning:
 
-# test coverage
-$ npm run test:cov
-```
+    1.Necha buyurtma qabul qilgan
 
-## Deployment
+    2.Jami savdo summasi (quantity * price * (1-discount))
 
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
+    3.Ortacha check summasi
 
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
+-------------------------------46-------------------------------
+Har bir mamlakatda nechta mijoz bor va ularning umumiy buyurtmalari soni qancha
 
-```bash
-$ npm install -g @nestjs/mau
-$ mau deploy
-```
+-------------------------------45-------------------------------
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+agar mijoz buyurtma bermagan bolsa, uni ham korsatish
 
-## Resources
+"agar buyurtma berganlarni chiqazsak 89 jami lekn bizning customers TABLE da 91 ta mijoz bor"
 
-Check out a few resources that may come in handy when working with NestJS:
-
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
-
-## Support
-
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+-------------------------------44-------------------------------
+  Har bir mijoz boyicha ortacha buyurtma summasi
